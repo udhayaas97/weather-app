@@ -58,9 +58,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.currentWeather = data?.weather[0];
         this.currentWeather.icon = `http://openweathermap.org/img/wn/${this.currentWeather?.icon}@2x.png`;
       });
-    (data: HttpErrorResponse) => {
-      // alert(data.error);
-    };
     this.subscriptions.add(weatherObserver);
   }
 }
