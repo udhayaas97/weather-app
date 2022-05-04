@@ -3,10 +3,116 @@
     Allow location permission to get current location
   </div>
   <ng-template #hasLocation>
-    <h4>Current Weather</h4>
-    <p>{{ weather?.name }}</p>
-    <p>{{ currentDate | date: "medium" }}</p>
-    <img [src]="currentWeather?.icon" alt="Weather icon" />
-    <p>{{ currentWeather?.main }}</p>
+    <div class="d-flex gap-5">
+      <ng-select
+        class="w-25"
+        [items]="countries | async"
+        bindLabel="name"
+        bindValue="id"
+        placeholder="Country"
+        (change)="onCountryChange($event)"
+      >
+      </ng-select>
+      <ng-select
+        class="w-25"
+        [items]="states | async"
+        bindLabel="name"
+        bindValue="id"
+        placeholder="State"
+        [readonly]="states === undefined"
+        (change)="onStateChange($event)"
+      >
+      </ng-select>
+      <ng-select
+        class="w-25"
+        [items]="cities | async"
+        bindLabel="name"
+        bindValue="id"
+        placeholder="City"
+        [readonly]="cities === undefined"
+        (change)="onCityChange($event)"
+      >
+      </ng-select>
+    </div>
+    <hr />
+    <div>
+      <h5 [class.spinner-grow]="isLoading">
+        {{ weather?.name }} {{ currentDate | date: "shortTime" }}
+      </h5>
+
+      <hr />
+      <div>
+        <b [class.spinner-grow]="isLoading">{{ currentWeather?.main }}</b>
+        <div class="d-flex align-items-center">
+          <div [class.spinner-grow]="isLoading">
+            <img
+              [class.d-none]="isLoading"
+              [src]="currentWeather?.icon"
+              alt="weather icon"
+            />
+          </div>
+          <h2 class="text-warning">
+            <span [class.spinner-grow]="isLoading">
+              {{ weather?.main?.temp | number: "1.0-0" }}
+            </span>
+            &#176;C
+          </h2>
+        </div>
+        <p>
+          Feels like
+          <span [class.spinner-grow]="isLoading">
+            {{ weather?.main?.feels_like | number: "1.0-1" }} </span
+          >&#176;C
+        </p>
+      </div>
+      <hr />
+      <div class="d-flex gap-5">
+        <i class="bi bi-moisture fs-1 text-primary"></i>
+        <div>
+          <p>
+            Pressure
+            <span [class.spinner-grow]="isLoading">
+              {{ weather?.main?.pressure }} </span
+            >mb
+          </p>
+          <p>
+            Humidity
+            <span [class.spinner-grow]="isLoading">
+              {{ weather?.main?.humidity }} </span
+            >%
+          </p>
+        </div>
+      </div>
+      <hr />
+      <div class="d-flex gap-5">
+        <i class="bi bi-cloud-snow fs-1 text-info"></i>
+        <div>
+          <p>
+            Cloudiness
+            <span [class.spinner-grow]="isLoading">{{
+              weather?.clouds?.all
+            }}</span
+            >%
+          </p>
+          <p>
+            Visibility
+            <span [class.spinner-grow]="isLoading">{{ getVisibility() }}</span>
+          </p>
+        </div>
+      </div>
+      <hr />
+      <div class="d-flex gap-5 align-items-center">
+        <i class="bi bi-wind fs-1"></i>
+        <div>
+          <p>
+            Wind speed
+            <span [class.spinner-grow]="isLoading">{{
+              weather?.wind?.speed
+            }}</span
+            >m/s
+          </p>
+        </div>
+      </div>
+    </div>
   </ng-template>
 </div>

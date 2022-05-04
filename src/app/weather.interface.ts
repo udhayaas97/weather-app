@@ -1,6 +1,7 @@
 export interface WeatherQueryParam {
-  lat: string;
-  lon: string;
+  lat?: string;
+  lon?: string;
+  q?: string;
 }
 
 export interface Weather {
